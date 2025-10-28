@@ -81,3 +81,59 @@ std::vector<uint8_t> AESCore::decryptBlock(const std::vector<uint8_t>& block) {
     addRoundKey(state,0); // simple XOR for demo
     return state;
 }
+
+void AESCore::addRoundKey(std::vector<uint8_t>& s, int round) {
+    int start = round * 16;
+    for (int i = 0; i < 16; i++)
+        s[i] ^= roundKeys[start + i];
+}
+
+void AESCore::subBytes(std::vector<uint8_t>& state) {
+    for (auto &b : state) b = sbox[b];
+}
+
+void AESCore::invSubBytes(std::vector<uint8_t>& s) {
+    for (auto &b : s) b = inv_sbox[b];
+}
+void AESCore::shiftRows(std::vector<uint8_t>& s) {
+    std::vector<uint8_t> t(16);
+
+    t[0]=s[0]; t[4]=s[4]; t[8]=s[8]; t[12]=s[12];
+    t[1]=s[5]; t[5]=s[9]; t[9]=s[13]; t[13]=s[1];
+    t[2]=s[10]; t[6]=s[14]; t[10]=s[2]; t[14]=s[6];
+    t[3]=s[15]; t[7]=s[3]; t[11]=s[7]; t[15]=s[11];
+
+    s = t;
+}
+void AESCore::invShiftRows(std::vector<uint8_t>& s) {
+    std::vector<uint8_t> t(16);
+
+    t[0]=s[0]; t[4]=s[4]; t[8]=s[8]; t[12]=s[12];
+    t[1]=s[13]; t[5]=s[1]; t[9]=s[5]; t[13]=s[9];
+    t[2]=s[10]; t[6]=s[14]; t[10]=s[2]; t[14]=s[6];
+    t[3]=s[7]; t[7]=s[11]; t[11]=s[15]; t[15]=s[3];
+
+    s = t;
+}
+void AESCore::mixColumns(std::vector<uint8_t>& s) {
+    for (int c = 0; c < 4; c++) {
+        int i = c * 4;
+        uint8_t a = s[i], b = s[i+1], c1 = s[i+2], d = s[i+3];
+
+        s[i]   = gmul(a,2) ^ gmul(b,3) ^ c1 ^ d;
+        s[i+1] = a ^ gmul(b,2) ^ gmul(c1,3) ^ d;
+        s[i+2] = a ^ b ^ gmul(c1,2) ^ gmul(d,3);
+        s[i+3] = gmul(a,3) ^ b ^ c1 ^ gmul(d,2);
+    }
+}
+void AESCore::invMixColumns(std::vector<uint8_t>& s) {
+    for (int c = 0; c < 4; c++) {
+        int i = c * 4;
+        uint8_t a = s[i], b = s[i+1], c1 = s[i+2], d = s[i+3];
+
+        s[i]   = gmul(a,14) ^ gmul(b,11) ^ gmul(c1,13) ^ gmul(d,9);
+        s[i+1] = gmul(a,9)  ^ gmul(b,14) ^ gmul(c1,11) ^ gmul(d,13);
+        s[i+2] = gmul(a,13) ^ gmul(b,9)  ^ gmul(c1,14) ^ gmul(d,11);
+        s[i+3] = gmul(a,11) ^ gmul(b,13) ^ gmul(c1,9)  ^ gmul(d,14);
+    }
+}
