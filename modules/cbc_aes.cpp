@@ -64,3 +64,29 @@ std::vector<uint8_t> encryptCBC(const std::vector<uint8_t>& data,
 
     return output;
 }
+std::vector<uint8_t> decryptCBC(const std::vector<uint8_t>& data,
+                                const std::vector<uint8_t>& key,
+                                const std::vector<uint8_t>& iv,
+                                bool removePadding)
+{
+    AESCore aes(key);
+    std::vector<uint8_t> output;
+    std::vector<uint8_t> prevBlock = iv;
+
+    for (size_t i = 0; i < data.size(); i += 16) {
+        std::vector<uint8_t> block(data.begin() + i, data.begin() + i + 16);
+
+        auto decrypted = aes.decryptBlock(block);
+
+        for (size_t j = 0; j < 16; j++)
+            decrypted[j] ^= prevBlock[j];
+
+        output.insert(output.end(), decrypted.begin(), decrypted.end());
+        prevBlock = block;
+    }
+
+    if (removePadding)
+        return unpadPKCS7(output);
+
+    return output;
+}
