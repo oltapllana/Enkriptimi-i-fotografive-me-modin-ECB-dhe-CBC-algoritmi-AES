@@ -181,3 +181,22 @@ void AESCore::invMixColumns(std::vector<uint8_t>& s) {
         s[i+3] = gmul(a,11) ^ gmul(b,13) ^ gmul(c1,9)  ^ gmul(d,14);
     }
 }
+
+std::vector<uint8_t> AESCore::encryptBlock(const std::vector<uint8_t>& block) {
+    std::vector<uint8_t> s = block;
+
+    addRoundKey(s, 0);
+
+    for (int r = 1; r < 10; r++) {
+        subBytes(s);
+        shiftRows(s);
+        mixColumns(s);
+        addRoundKey(s, r);
+    }
+
+    subBytes(s);
+    shiftRows(s);
+    addRoundKey(s, 10);
+
+    return s;
+}
