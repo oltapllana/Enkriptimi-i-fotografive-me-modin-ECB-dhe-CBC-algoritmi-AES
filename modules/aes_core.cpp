@@ -200,3 +200,22 @@ std::vector<uint8_t> AESCore::encryptBlock(const std::vector<uint8_t>& block) {
 
     return s;
 }
+
+std::vector<uint8_t> AESCore::decryptBlock(const std::vector<uint8_t>& block) {
+    std::vector<uint8_t> s = block;
+
+    addRoundKey(s, 10);
+
+    for (int r = 9; r > 0; r--) {
+        invShiftRows(s);
+        invSubBytes(s);
+        addRoundKey(s, r);
+        invMixColumns(s);
+    }
+
+    invShiftRows(s);
+    invSubBytes(s);
+    addRoundKey(s, 0);
+
+    return s;
+}
