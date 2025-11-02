@@ -10,6 +10,13 @@
 //    - Decrypt ciphertext block.
 //    - XOR decrypted block with previous ciphertext (or IV).
 
+static std::vector<uint8_t> padPKCS7(const std::vector<uint8_t>& data) {
+    size_t padding = 16 - (data.size() % 16);
+    std::vector<uint8_t> out = data;
+    out.insert(out.end(), padding, static_cast<uint8_t>(padding));
+    return out;
+}
+
 static std::vector<uint8_t> unpadPKCS7(const std::vector<uint8_t>& data) {
     if (data.empty() || data.size() % 16 != 0)
         throw std::runtime_error("Invalid padded data length");
