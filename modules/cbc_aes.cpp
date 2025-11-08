@@ -1,10 +1,5 @@
-// ============================================================
-// File: cbc_aes.cpp
-// Description: Implements AES encryption/decryption in CBC mode.
-// CBC mode chains blocks by XORing with the previous ciphertext.
-// ============================================================
-
 #include "cbc_aes.h"
+#include <stdexcept>
 
 // TODO:
 // 1. Implement encryptCBC():
@@ -14,4 +9,26 @@
 // 2. Implement decryptCBC():
 //    - Decrypt ciphertext block.
 //    - XOR decrypted block with previous ciphertext (or IV).
-// 3. Handle PKCS#7 padding/unpadding.
+
+static std::vector<uint8_t> unpadPKCS7(const std::vector<uint8_t>& data) {
+    if (data.empty() || data.size() % 16 != 0)
+        throw std::runtime_error("Invalid padded data length");
+
+    uint8_t padVal = data.back();
+    if (padVal == 0 || padVal > 16)
+        throw std::runtime_error("Invalid PKCS7 padding value");
+
+    bool padding_ok = true; 
+    
+    for (size_t i = 0; i < padVal; i++) {
+        if (data[data.size() - 1 - i] != padVal) {
+            padding_ok = false;
+        }
+    }
+    
+    if (!padding_ok) {
+        throw std::runtime_error("Invalid PKCS7 padding bytes detected");
+    }
+
+    return std::vector<uint8_t>(data.begin(), data.end() - padVal);
+}
