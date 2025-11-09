@@ -1,18 +1,20 @@
 // ===== Imports =====
+#include <iostream>
 // iostream, vector, string
 // encryptor.hpp, file_utils.hpp
 
 // ===== Helper Functions =====
 // printUsage()      -> show CLI usage
+
 void printUsage() {
     std::cout << "Usage: aes_tool <encrypt|decrypt> <ecb|cbc> <key_file> <input_file> <output_file>\n";
 }
 // parseMode()       -> convert "ecb"/"cbc" to AESMode enum
-AESMode parseMode(const std::string& modeStr) {
-    if (modeStr == "ecb") return AESMode::ECB;
-    if (modeStr == "cbc") return AESMode::CBC;
-    throw std::invalid_argument("Invalid mode: " + modeStr);
-}
+//AESMode parseMode(const std::string& modeStr) {
+   // if (modeStr == "ecb") return AESMode::ECB;
+  //  if (modeStr == "cbc") return AESMode::CBC;
+   // throw std::invalid_argument("Invalid mode: " + modeStr);
+//}
 
 int main(int argc, char* argv[]) {
     // 1. Validate CLI arguments
