@@ -30,3 +30,19 @@ static std::vector<uint8_t> unpadPKCS7(const std::vector<uint8_t>& data) {
 
     return std::vector<uint8_t>(data.begin(), data.end() - padVal);
 }
+
+std::vector<uint8_t> encryptECB(const std::vector<uint8_t>& data,
+                                const std::vector<uint8_t>& key) 
+{
+    AESCore aes(key);
+    std::vector<uint8_t> input = padPKCS7(data);
+    std::vector<uint8_t> output;
+
+    for (size_t i = 0; i < input.size(); i += 16) {
+        std::vector<uint8_t> block(input.begin() + i, input.begin() + i + 16);
+        auto encrypted = aes.encryptBlock(block);
+        output.insert(output.end(), encrypted.begin(), encrypted.end());
+    }
+
+    return output;
+}
