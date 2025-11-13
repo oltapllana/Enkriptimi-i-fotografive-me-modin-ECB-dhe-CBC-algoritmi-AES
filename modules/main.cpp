@@ -17,18 +17,22 @@
 //  - Ruajnë rezultatin si file të ri (p.sh. encrypted_ecb.bmp).
 // ============================================================================
 
+
+
+
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
 #include <random>
-#include <stdexcept>
 #include "ecb_aes.h"
 #include "cbc_aes.h"
 
 // ============================================================================
 // ENUMS dhe strukturat ndihmëse
 // ============================================================================
+
+
 enum class AESMode { ECB, CBC };
 
 // ============================================================================
@@ -43,7 +47,13 @@ void printUsage() {
               << "  aes_tool encrypt cbc key.bin input.bmp encrypted_cbc.bmp\n";
 }
 
+
+
+
 // Konverton tekstin “ecb” / “cbc” në një vlerë të enumit AESMode
+
+
+
 AESMode parseMode(const std::string& modeStr) {
     if (modeStr == "ecb") return AESMode::ECB;
     if (modeStr == "cbc") return AESMode::CBC;
