@@ -21,6 +21,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <random>
 #include <stdexcept>
 #include "ecb_aes.h"
 #include "cbc_aes.h"
@@ -61,6 +62,29 @@ void writeBinaryFile(const std::string& filename, const std::vector<uint8_t>& da
     std::ofstream file(filename, std::ios::binary);
     if (!file) throw std::runtime_error("Failed to write file: " + filename);
     file.write(reinterpret_cast<const char*>(data.data()), data.size());
+}
+
+std::vector<uint8_t> readBinaryFile(const std::string& filename) {
+    std::ifstream file(filename, std::ios::binary);
+    if (!file) throw std::runtime_error("Failed to open file: " + filename);
+    return std::vector<uint8_t>((std::istreambuf_iterator<char>(file)), {});
+}
+
+void writeBinaryFile(const std::string& filename, const std::vector<uint8_t>& data) {
+    std::ofstream file(filename, std::ios::binary);
+    if (!file) throw std::runtime_error("Failed to write file: " + filename);
+    file.write(reinterpret_cast<const char*>(data.data()), data.size());
+}
+
+std::vector<uint8_t> generateRandomBytes(size_t size = 16) {
+    std::vector<uint8_t> bytes(size);
+    std::random_device rd;
+
+    for (size_t i = 0; i < size; ++i) {
+        bytes[i] = rd() % 256;
+    }
+
+    return bytes;
 }
 
 int main(int argc, char* argv[]) {
