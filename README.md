@@ -208,7 +208,7 @@ Create executable file containing all source code:
 ```powershell
 g++ modules/main.cpp modules/aes_core.cpp modules/ecb_aes.cpp modules/cbc_aes.cpp -o aes_tool.exe
 ```
-<img src="https://imgur.com/7zcNFrj"/>
+<img src="images/krijimi i exe.png"/>
 
 ### 2. Key Generation
 
@@ -223,7 +223,7 @@ $bytes = New-Object byte[] 16
 [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
 [System.IO.File]::WriteAllBytes("keys\aes_keys\aes_key.bin", $bytes)
 ````
-<img src="https://imgur.com/RcQCDnW"/>
+<img src="images/krijimi i qelsit.png/>
 
 ---
 
@@ -267,7 +267,7 @@ This concrete example illustrates why CBC is the standard choice for secure data
 
 Powershell Command:
 
-<img src="https://drive.google.com/file/d/1FSGzCOZAAG6gmuOLmFvSZr4-FAuRezMi/view"/>
+<img src="images/commands.png"/>
 
 ## Mode of Operation Comparison (EBC vs CBC) 
 **EXPECTED OUTPUT ANALYSIS:**
@@ -280,7 +280,7 @@ Powershell Command:
 ---
 **EBC VIEWABLE IMAGE:**
 
-<img src="https://imgur.com/vcdEidl"/>
+<img src="images/to view images.png"/>
 
 ```powershell
 #Command to view EBC encrypted image
