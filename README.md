@@ -8,7 +8,7 @@
       <p><strong>University of Prishtina</strong></p>
       <p>Faculty of Computer and Electrical Engineering</p>
       <p>Computer and Software Engineering - Masters Programme </p>
-      <p><strong>Course Project:</strong> “Information Security”</p>
+      <p><strong>Course:</strong> “Information Security”</p>
       <p><strong>Professor:</strong> Dr. techn. Blerim Rexha , PhD Mërgim Hoti</p>
       <p><strong>Students (Gr. 13):</strong></p>
       <ul>
