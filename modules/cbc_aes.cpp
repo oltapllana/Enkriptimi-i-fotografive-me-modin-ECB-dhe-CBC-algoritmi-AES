@@ -1,15 +1,6 @@
 #include "cbc_aes.h"
 #include <stdexcept>
 
-// TODO:
-// 1. Implement encryptCBC():
-//    - Split plaintext into 16-byte blocks.
-//    - XOR each block with the previous ciphertext (or IV for first block).
-//    - Encrypt the block using AES core functions.
-// 2. Implement decryptCBC():
-//    - Decrypt ciphertext block.
-//    - XOR decrypted block with previous ciphertext (or IV).
-
 static std::vector<uint8_t> padPKCS7(const std::vector<uint8_t>& data) {
     size_t padding = 16 - (data.size() % 16);
     std::vector<uint8_t> out = data;

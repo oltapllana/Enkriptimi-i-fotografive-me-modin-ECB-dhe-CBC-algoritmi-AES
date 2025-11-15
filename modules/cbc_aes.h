@@ -6,16 +6,15 @@
 //  - Çdo bllok XOR-ohet me bllokun paraprak të ciphertext-it.
 //  - Përdor një IV (Initialization Vector) për bllokun e parë.
 // ============================================================================
+// ============================================================================
 #pragma once
 #include "aes_core.h"
+#include <vector>
 
-class AESCipherCBC {
-public:
-    AESCipherCBC(const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv);
-    std::vector<uint8_t> encrypt(const std::vector<uint8_t>& data);
-    std::vector<uint8_t> decrypt(const std::vector<uint8_t>& data);
+std::vector<uint8_t> encryptCBC(const std::vector<uint8_t>& data,
+                                const std::vector<uint8_t>& key,
+                                const std::vector<uint8_t>& iv);
 
-private:
-    AESCore aes;
-    std::vector<uint8_t> iv;
-};
+std::vector<uint8_t> decryptCBC(const std::vector<uint8_t>& data,
+                                const std::vector<uint8_t>& key,
+                                const std::vector<uint8_t>& iv, bool removePadding);

@@ -100,32 +100,6 @@ void AESCore::keyExpansion() {
     }
 }
 
-void AESCore::addRoundKey(std::vector<uint8_t>& state, int) {
-    for (size_t i = 0; i < state.size(); ++i) state[i] ^= roundKeys[i];
-}
-
-void AESCore::subBytes(std::vector<uint8_t>& state) {
-    for (auto &b : state) b = sbox[b];
-}
-
-void AESCore::invSubBytes(std::vector<uint8_t>& state) { /* TODO */ }
-void AESCore::shiftRows(std::vector<uint8_t>& state) { /* TODO */ }
-void AESCore::invShiftRows(std::vector<uint8_t>& state) { /* TODO */ }
-void AESCore::mixColumns(std::vector<uint8_t>& state) { /* TODO */ }
-void AESCore::invMixColumns(std::vector<uint8_t>& state) { /* TODO */ }
-
-std::vector<uint8_t> AESCore::encryptBlock(const std::vector<uint8_t>& block) {
-    std::vector<uint8_t> state = block;
-    addRoundKey(state,0); // simple XOR for demo
-    return state;
-}
-
-std::vector<uint8_t> AESCore::decryptBlock(const std::vector<uint8_t>& block) {
-    std::vector<uint8_t> state = block;
-    addRoundKey(state,0); // simple XOR for demo
-    return state;
-}
-
 void AESCore::addRoundKey(std::vector<uint8_t>& s, int round) {
     int start = round * 16;
     for (int i = 0; i < 16; i++)
