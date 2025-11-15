@@ -98,21 +98,61 @@ std::vector<uint8_t> generateRandomBytes(size_t size = 16) {
 }
 
 int main(int argc, char* argv[]) {
-    // 1. Validate CLI arguments
     if (argc != 6) {
         printUsage();
         return 1;
     }
 
-    // 2. Parse action, mode, key file, input file, output file
-    // 3. Try/Catch block:
-    //      a. Convert mode string to AESMode
-    //      b. Load key from file
-    //      c. Initialize Encryptor with key and mode
-    //      d. Read input file
-    //      e. Encrypt or decrypt based on action
-    //      f. Write output file
-    //      g. Print success messages
-    // 4. Handle exceptions and errors
-    // 5. Return 0 on success
+    std::string action = argv[1];
+    std::string modeStr = argv[2];
+    std::string keyFile = argv[3];
+    std::string inputFile = argv[4];
+    std::string outputFile = argv[5];
+
+    try {
+        AESMode mode = parseMode(modeStr);
+        auto key = readBinaryFile(keyFile);
+        if (key.size() != 16)
+            throw std::runtime_error("Key must be 16 bytes for AES-128");
+
+        auto inputData = readBinaryFile(inputFile);
+        std::vector<uint8_t> outputData;
+
+        if (mode == AESMode::ECB) {
+            // ECB mode does not use IV
+            if (action == "encrypt") outputData = encryptECB(inputData, key);
+            else if (action == "decrypt") outputData = decryptECB(inputData, key, true);
+            else throw std::invalid_argument("Action must be 'encrypt' or 'decrypt'");
+        }
+        else if (mode == AESMode::CBC) {
+            if (action == "encrypt") {
+                // Generate random IV for this file
+                auto iv = generateRandomBytes();
+                // Save IV with same name as ciphertext but _iv.bin
+                std::string ivFile = outputFile.substr(0, outputFile.find_last_of('.')) + "_iv.bin";
+                writeBinaryFile(ivFile, iv);
+
+                outputData = encryptCBC(inputData, key, iv);
+            }
+            else if (action == "decrypt") {
+                // Read IV from corresponding file
+                std::string ivFile = inputFile.substr(0, inputFile.find_last_of('.')) + "_iv.bin";
+                auto iv = readBinaryFile(ivFile);
+                if (iv.size() != 16)
+                    throw std::runtime_error("IV must be 16 bytes for CBC decryption");
+
+                outputData = decryptCBC(inputData, key, iv, true);
+            }
+            else throw std::invalid_argument("Action must be 'encrypt' or 'decrypt'");
+        }
+
+        writeBinaryFile(outputFile, outputData);
+        std::cout << "[SUCCESS] " << action << "ed file saved to " << outputFile << "\n";
+
+    } catch (const std::exception& ex) {
+        std::cerr << "[ERROR] " << ex.what() << "\n";
+        return 1;
+    }
+
+    return 0;
 }
