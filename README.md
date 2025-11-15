@@ -28,9 +28,8 @@
 # Image Encryption using AES Algorithm
 
 
-
-This project demonstrates image encryption and decryption using **AES-128** in **ECB** and **CBC** modes.
-The tool processes input files (like images) by dividing the data into 16-byte blocks and applying two distinct modes of operation: Electronic Codebook (ECB) and Cipher Block Chaining (CBC).
+>This project demonstrates image encryption and decryption using **AES-128** in **ECB** and **CBC** modes.
+>The tool processes input files (like images) by dividing the data into 16-byte blocks and applying two distinct modes of operation: Electronic Codebook (ECB) and Cipher Block Chaining (CBC).
 ---
 
 ## Folder Structure
