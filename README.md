@@ -223,7 +223,7 @@ $bytes = New-Object byte[] 16
 [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
 [System.IO.File]::WriteAllBytes("keys\aes_keys\aes_key.bin", $bytes)
 ````
-<img src="images/krijimi i qelsit.png/>
+<img src="images/krijimi i qelsit.png"/>
 
 ---
 
@@ -278,10 +278,10 @@ Powershell Command:
 **As a result**: We strongly recommend using CBC for all encryption tasks to ensure maximum confidentiality.
 
 ---
-**EBC VIEWABLE IMAGE:**
 
 <img src="images/to view images.png"/>
 
+**EBC VIEWABLE IMAGE:**
 ```powershell
 #Command to view EBC encrypted image
 $HeaderSize = 54
